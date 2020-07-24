@@ -2,6 +2,7 @@ import React from 'react';
 import Aux from '../../../hoc/Auxiliary/Auxiliary';
 import Button from '../../UI/Button/Button';
 
+
 const orderSummary = (props) => {
   console.log('orderSummary props:', props);
   const ingredientsSummary = Object.keys(props.ingredients).map((ingKey, i) => {
@@ -27,8 +28,8 @@ const orderSummary = (props) => {
       </Button>
       <Button btnType={'Success'} clicked={props.continue}>
         CONTINUE
-      </Button>
-    </Aux>
+      </Button>    
+      </Aux>
   );
 };
 
