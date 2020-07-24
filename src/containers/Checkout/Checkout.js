@@ -12,7 +12,7 @@ class Checkout extends Component {
   };
 
   checkoutCancelHandler = () => {
-    console.log('checkout cancel props', this.props);
+    // console.log('checkout cancel props', this.props);
 
     this.props.history.goBack();
   };
@@ -21,7 +21,7 @@ class Checkout extends Component {
   };
 
   render() {
-    console.log('checkout props', this.props);
+    // console.log('checkout props', this.props);
 
     return (
       <CheckoutSummary

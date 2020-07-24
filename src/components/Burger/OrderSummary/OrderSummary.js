@@ -4,7 +4,7 @@ import Button from '../../UI/Button/Button';
 
 
 const orderSummary = (props) => {
-  console.log('orderSummary props:', props);
+  // console.log('orderSummary props:', props);
   const ingredientsSummary = Object.keys(props.ingredients).map((ingKey, i) => {
     return (
       <li key={ingKey + i}>
