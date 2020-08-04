@@ -16,6 +16,14 @@ const INGREDIENT_PRICES = {
 };
 
 class BurgerBuilder extends Component {
+  state = {
+    ingredients: null,
+    totalPrice: 4,
+    purchasable: true,
+    purchasing: false,
+    loading: false,
+    error: null,
+  };
   updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map((ingKey) => {
@@ -106,6 +114,7 @@ class BurgerBuilder extends Component {
     for (let i in this.state.ingredients){
       queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
     }
+    queryParams.push('price=' + this.state.totalPrice.toFixed(2));
     const queryString = queryParams.join('&');
 
     this.props.history.push({
@@ -114,14 +123,6 @@ class BurgerBuilder extends Component {
     });
   };
 
-  state = {
-    ingredients: null,
-    totalPrice: 4,
-    purchasable: true,
-    purchasing: false,
-    loading: false,
-    error: null,
-  };
 
   componentDidMount() {
     axios
