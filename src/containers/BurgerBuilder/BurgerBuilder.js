@@ -24,6 +24,18 @@ class BurgerBuilder extends Component {
     loading: false,
     error: null,
   };
+
+  componentDidMount() {
+    axios
+      .get('https://burger-builder-82172.firebaseio.com/ingredients.json')
+      .then((res) => {
+        this.setState({ ingredients: res.data });
+      })
+      .catch((err) => {
+        this.setState({ error: err });
+      });
+  }
+
   updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map((ingKey) => {
@@ -111,8 +123,12 @@ class BurgerBuilder extends Component {
     //     this.setState({ loading: false, purchasing: false });
     //   });
     const queryParams = [];
-    for (let i in this.state.ingredients){
-      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          '=' +
+          encodeURIComponent(this.state.ingredients[i])
+      );
     }
     queryParams.push('price=' + this.state.totalPrice.toFixed(2));
     const queryString = queryParams.join('&');
@@ -122,18 +138,6 @@ class BurgerBuilder extends Component {
       search: '?' + queryString,
     });
   };
-
-
-  componentDidMount() {
-    axios
-      .get('https://burger-builder-82172.firebaseio.com/ingredients.json')
-      .then((res) => {
-        this.setState({ ingredients: res.data });
-      })
-      .catch((err) => {
-        this.setState({ error: err });
-      });
-  }
 
   render() {
     let orderSummary = null;
