@@ -4,7 +4,7 @@ import Button from '../../../components/UI/Button/Button';
 import Spiner from '../../../components/UI/Spiner/Spinner';
 import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
-import { element } from 'prop-types';
+// import { element } from 'prop-types';
 
 class ContactData extends Component {
   state = {
@@ -107,6 +107,8 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: formData,
     };
+
+    console.log('xxxxxORDERxxxxx', order);
     this.setState({
       loading: true,
     });
