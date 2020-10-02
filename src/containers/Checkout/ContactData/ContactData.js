@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spiner from '../../../components/UI/Spiner/Spinner';
-import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
-// import { element } from 'prop-types';
+import {connect} from 'react-redux';
+import * as burgerOrderActions from '../../../store/actions/index';
 
 class ContactData extends Component {
   state = {
@@ -110,19 +110,11 @@ class ContactData extends Component {
 
     console.log('xxxxxORDERxxxxx', order);
     this.setState({
-      loading: true,
+      // loading: true,
     });
 
-    axios
-      .post('/orders.json', order)
-      .then((respose) => {
-        this.setState({ loading: false });
-        this.props.history.push('/');
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ loading: false });
-      });
+    this.props.onPurchaseBurgerStart(order);
+
   };
   checkValidity(value, rules){
     let isValid = true;
@@ -210,4 +202,16 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return{
+
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return{
+    onPurchaseBurgerStart : (orderData)=>{dispatch(burgerOrderActions.purchaseBurgerStart(orderData))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
