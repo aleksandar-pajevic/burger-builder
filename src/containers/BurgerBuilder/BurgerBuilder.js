@@ -17,7 +17,6 @@ class BurgerBuilder extends Component {
   };
   componentDidMount() {
   this.props.onInitIngredients();
-  console.log('props-ings', this.props.ings)
   }
 
   updatePurchaseState = (ingredients) => {
@@ -47,7 +46,6 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-  console.log('stateeee', this.props.ings);
 
     let orderSummary = null;
 
