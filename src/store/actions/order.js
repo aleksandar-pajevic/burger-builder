@@ -15,17 +15,29 @@ export const purchaseBurgerFail = (error) => {
     error: error,
   }
 };
+export const purchaseBurgerStart = () => {
+  return{
+    type: actionTypes.PURCHASE_BURGER_START
+  }
+};
 
-export const purchaseBurgerStart = (orderData) => {
+export const purchaseBurger = (orderData) => {
   return dispatch => {
+    dispatch(purchaseBurgerStart());
     axios
     .post('/orders.json', orderData)
-    .then((respose) => {
-      console.log('purchaseBurgerStart res.data', respose.data);
-     dispatch(purchaseBurgerSuccess(respose.data, orderData))
+    .then((response) => {
+      console.log('order Id:', response.data.name);
+     dispatch(purchaseBurgerSuccess(response.data, orderData))
     })
     .catch((err) => {
       dispatch(purchaseBurgerFail(err))
     });
   }
 };
+
+export const purchaseInit = () => {
+  return{
+    type: actionTypes.PURCHASE_INIT
+  }
+}

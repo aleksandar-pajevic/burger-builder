@@ -8,7 +8,7 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spiner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { connect } from 'react-redux';
-import * as burgerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
   state = {
@@ -31,6 +31,7 @@ class BurgerBuilder extends Component {
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
+    this.props.onPurchaseInit();
   };
   cancelPurchaseHandler = () => {
     this.setState({ purchasing: false });
@@ -98,21 +99,24 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
-    error: state.error,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddIngredient: (ingType) => {
-      dispatch(burgerBuilderActions.addIngredient(ingType));
+      dispatch(actions.addIngredient(ingType));
     },
     onRemoveIngredient: (ingType) => {
-      dispatch(burgerBuilderActions.removeIngredient(ingType));
+      dispatch(actions.removeIngredient(ingType));
     },
     onInitIngredients: () => {
-      dispatch(burgerBuilderActions.initIngredients());
+      dispatch(actions.initIngredients());
+    },
+    onPurchaseInit: () => {
+      dispatch(actions.purchaseInit());
     },
   };
 };
