@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Order.module.css';
 
 const order = (props) => {
-  console.log(props);
   const ingredients = [];
 
   for (let ingredientName in props.ingredients) {
@@ -33,7 +32,7 @@ const order = (props) => {
     <div className={styles.Order}>
       <p>Ingredients: {ingredientOutput}</p>
       <p>
-        Price: <strong>USD {props.price}</strong>
+        Price: <strong>USD {props.price.toFixed(2)}</strong>
       </p>
     </div>
   );
