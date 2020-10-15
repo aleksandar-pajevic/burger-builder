@@ -3,9 +3,9 @@ import styles from './ContactData.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Spiner from '../../../components/UI/Spiner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import * as burgerOrderActions from '../../../store/actions/index';
-import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import Axios from 'axios';
 
 class ContactData extends Component {
@@ -94,10 +94,10 @@ class ContactData extends Component {
     formIsValid: false,
   };
 
-  orderHandler = (event) => {   
+  orderHandler = (event) => {
     event.preventDefault();
     const formData = {};
-    for (let formIdentifier in this.state.orderForm ){
+    for (let formIdentifier in this.state.orderForm) {
       formData[formIdentifier] = this.state.orderForm[formIdentifier].value;
     }
     // console.log(this.props.ingredients);
@@ -112,23 +112,22 @@ class ContactData extends Component {
     console.log('xxxxxORDERxxxxx', order);
 
     this.props.onPurchaseBurger(order);
-
   };
-  checkValidity(value, rules){
+  checkValidity(value, rules) {
     let isValid = true;
-    if (rules.required){
+    if (rules.required) {
       isValid = value.trim() !== '' && isValid;
     }
 
-    if(rules.minLength){
+    if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
     }
 
-    if(rules.maxLength){
+    if (rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
     }
     return isValid;
-  };
+  }
   inputChangedHandler(event, inputId) {
     const updatedOrderForm = {
       ...this.state.orderForm,
@@ -138,19 +137,21 @@ class ContactData extends Component {
     };
 
     updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation );
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
     updatedFormElement.touched = true;
     console.log('updatedFormElement.valid', updatedFormElement.valid);
     updatedOrderForm[inputId] = updatedFormElement;
-    
-    let formIsValid = true;
-    
-    for(inputId in updatedOrderForm){
-      formIsValid = updatedOrderForm[inputId].valid && formIsValid;
-    };
-    console.log("formIsValid:", formIsValid);
-    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
 
+    let formIsValid = true;
+
+    for (inputId in updatedOrderForm) {
+      formIsValid = updatedOrderForm[inputId].valid && formIsValid;
+    }
+    console.log('formIsValid:', formIsValid);
+    this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
   }
 
   render() {
@@ -181,9 +182,7 @@ class ContactData extends Component {
             />
           );
         })}
-        <Button 
-        disabled={!this.state.formIsValid}
-        btnType="Success">
+        <Button disabled={!this.state.formIsValid} btnType="Success">
           ORDER
         </Button>
       </form>
@@ -200,18 +199,23 @@ class ContactData extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return{
+const mapStateToProps = (state) => {
+  return {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading
-  }
+    loading: state.order.loading,
+  };
 };
 
-const mapDispatchToProps = dispatch => {
-  return{
-    onPurchaseBurger : (orderData)=>{dispatch(burgerOrderActions.purchaseBurger(orderData))}
-  }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onPurchaseBurger: (orderData) => {
+      dispatch(burgerOrderActions.purchaseBurger(orderData));
+    },
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, Axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, Axios));
