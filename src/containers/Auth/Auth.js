@@ -36,10 +36,16 @@ class Auth extends Component {
         touched: false,
       },
     },
+    signingIn: true,
   };
   formHandler = (event) => {
     event.preventDefault();
-    this.props.onAuthStart();
+    const userInputData = {
+      email: this.state.userData.email.value,
+      password: this.state.userData.password.value,
+    };
+    console.log(userInputData);
+    this.props.onAuth(userInputData, this.state.signingIn);
   };
 
   checkValidity(value, rules) {
@@ -82,7 +88,15 @@ class Auth extends Component {
     }
     console.log('formIsValid:', formIsValid);
     this.setState({ userData: updatedUserData, formIsValid: formIsValid });
-  }
+  };
+  switchAuthModeHandler = (event) => {
+    event.preventDefault();
+    this.setState(prevState => {
+      return{
+        signingIn: !prevState.signingIn
+      }
+    })
+  };
   render() {
     const formElementsArray = [];
     for (let key in this.state.userData) {
@@ -93,26 +107,29 @@ class Auth extends Component {
     }
 
     let form = (
-      <form onSubmit={this.formHandler}>
-        {formElementsArray.map((el) => {
-          return (
-            <Input
-              key={el.id}
-              name={el.id}
-              elementType={el.config.elementType}
-              elementConfig={el.config.elementConfig}
-              value={el.config.value}
-              changed={(event) => {
-                this.inputChangedHandler(event, el.id);
-              }}
-              invalid={!el.config.valid}
-              shouldValidate={el.config.validation}
-              touched={el.config.touched}
-            />
-          );
-        })}
-        <Button btnType="Success">SIGN UP</Button>
-      </form>
+      <div>
+        <form onSubmit={this.formHandler}>
+          {formElementsArray.map((el) => {
+            return (
+              <Input
+                key={el.id}
+                name={el.id}
+                elementType={el.config.elementType}
+                elementConfig={el.config.elementConfig}
+                value={el.config.value}
+                changed={(event) => {
+                  this.inputChangedHandler(event, el.id);
+                }}
+                invalid={!el.config.valid}
+                shouldValidate={el.config.validation}
+                touched={el.config.touched}
+              />
+            );
+          })}
+          <Button btnType="Success">{this.state.signingIn ? 'SIGN IN' : 'SIGN UP'}</Button>
+        </form>
+        <Button btnType="Danger" clicked={this.switchAuthModeHandler}>CHANGE TO {this.state.signingIn ? 'SIGN UP' : 'SIGN IN'}</Button>
+      </div>
     );
 
     return <div className={styles.UserData}>{form}</div>;
@@ -121,8 +138,8 @@ class Auth extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuthStart: () => {
-      dispatch(actions.authStart());
+    onAuth: (userInputData, signingIn) => {
+      dispatch(actions.auth(userInputData, signingIn));
     },
   };
 };
