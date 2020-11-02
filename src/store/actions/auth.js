@@ -13,6 +13,18 @@ export const authSuccess = (responseData) => {
     userId: responseData.localId
   }
 };
+export const logout = () => {
+  return{
+    type: actionTypes.AUTH_LOGOUT
+  }
+};
+export const checkAuthTimeout = (expirationTime) => {
+ return dispatch=>{
+   setTimeout((expirationTime)=>{
+     dispatch(logout())
+   }, expirationTime*1000)
+ }
+};
 export const authFail = (error) => {
   return{
     type: actionTypes.AUTH_FAIL,
@@ -31,7 +43,8 @@ export const auth = (userInputData, singingIn) => {
     axios.post(endpoint, authData)
     .then((response) => {
       console.log('auth response', response.data);
-      dispatch(authSuccess(response.data))
+      dispatch(authSuccess(response.data));
+      dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch((error) => {
       console.log('auth error', error);
