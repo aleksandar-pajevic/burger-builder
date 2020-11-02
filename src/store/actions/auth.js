@@ -35,7 +35,7 @@ export const auth = (userInputData, singingIn) => {
     })
     .catch((error) => {
       console.log('auth error', error);
-      dispatch(authFail(error))
+      dispatch(authFail(error.response.data.error))
     })
   } 
 }

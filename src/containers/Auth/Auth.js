@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spiner/Spinner';
+
 import styles from './Auth.module.css';
-import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
@@ -88,14 +91,14 @@ class Auth extends Component {
     }
     console.log('formIsValid:', formIsValid);
     this.setState({ userData: updatedUserData, formIsValid: formIsValid });
-  };
+  }
   switchAuthModeHandler = (event) => {
     event.preventDefault();
-    this.setState(prevState => {
-      return{
-        signingIn: !prevState.signingIn
-      }
-    })
+    this.setState((prevState) => {
+      return {
+        signingIn: !prevState.signingIn,
+      };
+    });
   };
   render() {
     const formElementsArray = [];
@@ -126,16 +129,38 @@ class Auth extends Component {
               />
             );
           })}
-          <Button btnType="Success">{this.state.signingIn ? 'SIGN IN' : 'SIGN UP'}</Button>
+          <Button btnType="Success">
+            {this.state.signingIn ? 'SIGN IN' : 'SIGN UP'}
+          </Button>
         </form>
-        <Button btnType="Danger" clicked={this.switchAuthModeHandler}>CHANGE TO {this.state.signingIn ? 'SIGN UP' : 'SIGN IN'}</Button>
+        <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
+          CHANGE TO {this.state.signingIn ? 'SIGN UP' : 'SIGN IN'}
+        </Button>
       </div>
     );
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+    let error = <p></p>;
+    if (this.props.error) {
+      error = <p>{this.props.error.message}</p>;
+    }
 
-    return <div className={styles.UserData}>{form}</div>;
+    return (
+      <div className={styles.UserData}>
+        {error}
+        {form}
+      </div>
+    );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (userInputData, signingIn) => {
@@ -144,4 +169,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
