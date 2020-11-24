@@ -12,6 +12,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 4,
   error: false,
+  building: false,
 };
 
 const addIngredient = (state, action) => {
@@ -21,6 +22,7 @@ const addIngredient = (state, action) => {
       [action.IngName]: state.ingredients[action.IngName] + 1,
     },
     totalPrice: state.totalPrice + INGREDIENT_PRICES[action.IngName],
+    building: true,
   });
 };
 const removeIngredient = (state, action) => {
@@ -30,6 +32,7 @@ const removeIngredient = (state, action) => {
       [action.IngName]: state.ingredients[action.IngName] - 1,
     },
     totalPrice: state.totalPrice - INGREDIENT_PRICES[action.IngName],
+    building: true,
   });
 };
 const fetchIngredientsFail = (state, action) => {
@@ -40,6 +43,7 @@ const setIngredient = (state, action) => {
     ingredients: action.ingredients,
     error: false,
     totalPrice: 4,
+    building: false,
   });
 };
 
