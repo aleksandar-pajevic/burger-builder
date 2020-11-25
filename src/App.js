@@ -32,6 +32,8 @@ class App extends Component {
           <Route path="/orders" component={Orders} />
           <Route path="/checkout" component={checkout} />
           <Route path="/logout" component={Logout} />
+          <Route path="/auth" component={Auth} />
+          <Redirect to='/' />
       </Switch>)
     };
 
