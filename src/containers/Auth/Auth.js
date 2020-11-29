@@ -8,39 +8,41 @@ import Spinner from '../../components/UI/Spiner/Spinner';
 
 import styles from './Auth.module.css';
 import * as actions from '../../store/actions/index';
+import {updateObject} from '../../shared/utility';
 
 class Auth extends Component {
   state = {
     userData: {
       email: {
-        elementType: 'input',
         elementConfig: {
           type: 'email',
           placeholder: 'Your E-mail',
         },
-        value: '',
         validation: {
           required: true,
           isEmail: true,
         },
+        elementType: 'input',
+        value: '',
         valid: false,
         touched: false,
       },
       password: {
-        elementType: 'input',
         elementConfig: {
           type: 'password',
           placeholder: 'Your password',
         },
-        value: '',
         validation: {
           required: true,
           minLength: 6,
         },
+        elementType: 'input',
+        value: '',
         valid: false,
         touched: false,
       },
     },
+    formIsValid: false,
     signingIn: true,
   };
   componentDidMount (){
@@ -78,22 +80,20 @@ class Auth extends Component {
   }
 
   inputChangedHandler(event, inputId) {
-    const updatedUserData = {
-      ...this.state.userData,
-    };
-    const updatedFormElement = {
-      ...updatedUserData[inputId],
-    };
-
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
-    updatedFormElement.touched = true;
-    console.log('updatedFormElement.valid', updatedFormElement.valid);
-    updatedUserData[inputId] = updatedFormElement;
-
+    
+    const updatedFormElement = updateObject(this.state.userData[inputId], {
+      value : event.target.value,
+      valid : this.checkValidity(
+        event.target.value,
+        this.state.userData[inputId].validation
+      ),
+      touched: true,
+    });
+    console.log('Updated form element', updatedFormElement);
+    const updatedUserData = updateObject(this.state.userData, {
+      [inputId] : updatedFormElement
+    });
+    console.log('Updated user data', updatedUserData);
     let formIsValid = true;
 
     for (inputId in updatedUserData) {
@@ -139,7 +139,7 @@ class Auth extends Component {
               />
             );
           })}
-          <Button btnType="Success">
+          <Button btnType="Success" disabled={!this.state.formIsValid}>
             {this.state.signingIn ? 'SIGN IN' : 'SIGN UP'}
           </Button>
         </form>
