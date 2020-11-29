@@ -55,7 +55,6 @@ class Auth extends Component {
       email: this.state.userData.email.value,
       password: this.state.userData.password.value,
     };
-    console.log(userInputData);
     this.props.onAuth(userInputData, this.state.signingIn);
   };
 
@@ -69,17 +68,14 @@ class Auth extends Component {
       ),
       touched: true,
     });
-    console.log('Updated form element', updatedFormElement);
     const updatedUserData = updateObject(this.state.userData, {
       [inputId] : updatedFormElement
     });
-    console.log('Updated user data', updatedUserData);
     let formIsValid = true;
 
     for (inputId in updatedUserData) {
       formIsValid = updatedUserData[inputId].valid && formIsValid;
     }
-    console.log('formIsValid:', formIsValid);
     this.setState({ userData: updatedUserData, formIsValid: formIsValid });
   }
   switchAuthModeHandler = (event) => {

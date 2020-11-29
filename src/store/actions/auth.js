@@ -49,12 +49,10 @@ export const auth = (userInputData, singingIn) => {
       localStorage.setItem('token', response.data.idToken);
       localStorage.setItem('expirationDate', expirationDate);
       localStorage.setItem('userId', response.data.localId);
-      console.log('auth response', response.data);
       dispatch(authSuccess(response.data.idToken, response.data.localId));
       dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch((error) => {
-      console.log('auth error', error);
       dispatch(authFail(error.response.data.error))
     })
   } 

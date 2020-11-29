@@ -13,7 +13,6 @@ import * as actions from './store/actions/index';
 class App extends Component {
   componentDidMount(){
     this.props.onTryAutoSignup();
-    console.log("is auth", this.props.isAuth);
   };
 
   render() {

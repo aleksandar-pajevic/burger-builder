@@ -105,18 +105,12 @@ class ContactData extends Component {
     for (let formIdentifier in this.state.orderForm) {
       formData[formIdentifier] = this.state.orderForm[formIdentifier].value;
     }
-    // console.log(this.props.ingredients);
-    // console.log('contacData price', this.props.price);
-    // alert('Your burger will be delivered in 30 minutes.');
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: formData,
       userId: this.props.userId,
     };
-
-    console.log('xxxxxORDERxxxxx', order);
-
     this.props.onPurchaseBurger(order, this.props.token);
   };
   
@@ -130,17 +124,12 @@ class ContactData extends Component {
     const updatedOrderForm = updateObject(this.state.orderForm, {
       [inputId]: updatedFormElement
     });
-   
-    console.log('updatedFormElement', updatedFormElement);
-    console.log('updatedOrderForm', updatedOrderForm);
-
 
     let formIsValid = true;
 
     for (inputId in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputId].valid && formIsValid;
     }
-    console.log('formIsValid:', formIsValid);
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
   }
 
